@@ -14,7 +14,7 @@ import { reconnect } from 'https://esm.sh/@wagmi/core@2';
 // ── YOUR WalletConnect Project ID ──────────────────────────────────────────
 // Get a free one at https://cloud.walletconnect.com  (takes 30 seconds)
 // Replace the placeholder below before deploying.
-const PROJECT_ID = 'YOUR_WALLETCONNECT_PROJECT_ID';
+const PROJECT_ID = 'f914ed3c80a27cd3c8f0217ba6ddb0fe';
 // ──────────────────────────────────────────────────────────────────────────
 
 const metadata = {
