@@ -1,5 +1,4 @@
-
-[reap-what-you-sow-v3.html](https://github.com/user-attachments/files/26597350/reap-what-you-sow-v3.html)
+[reap-what-you-sow-v3.html](https://github.com/user-attachments/files/26597678/reap-what-you-sow-v3.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,6 +63,13 @@ const modal = createWeb3Modal({
 // Expose modal + wagmiConfig globally so the rest of the app can use them
 window._w3modal = modal;
 window._wagmiConfig = wagmiConfig;
+
+// Expose connect button handler globally so onclick in HTML can reach it
+window.openWalletModal = function(){
+  hide('l-err');
+  window._w3modal.open();
+  if(window._pollForAccount) window._pollForAccount();
+};
 
 // Listen for account changes from the modal
 modal.subscribeEvents(async (event) => {
@@ -548,17 +554,6 @@ function startPoll(){pollTimer=setInterval(async()=>{const st=await loadS('rwys-
 // ════════════════════════════════════
 function showErr(msg){$('l-err').textContent=msg;show('l-err');}
 
-function openWalletModal(){
-  hide('l-err');
-  if(!window._w3modal){
-    showErr('Wallet modal not loaded yet — check your Project ID and internet connection.');
-    return;
-  }
-  window._w3modal.open();
-  // Fallback poll in case CONNECT_SUCCESS event doesn't fire for some wallets
-  if(window._pollForAccount) window._pollForAccount();
-}
-
 // Called by the ESM module above after successful connect
 window.handleWalletLogin = async function(rawAddr){
   if(window._sessionActive) return; // prevent double-fire
@@ -941,9 +936,9 @@ async function submitAdd(){
   if(!a||a.length<4){toast('Invalid','Enter a valid address');return;}
   if(ST.wallets.find(w=>w.addr.toLowerCase()===a.toLowerCase())){toast('Address Already Registered','This wallet address is already in the registry.');return;}
   // Check limit
+  const sessionAddr=session?.ethAddr?.toLowerCase();
   const meta=(await loadS('rwys-wallets'))||{};
-  const addr=session?.ethAddr?.toLowerCase();
-  const added=(addr&&meta[addr]?.walletsAdded)||0;
+  const added=(sessionAddr&&meta[sessionAddr]?.walletsAdded)||0;
   if(added>=MAX_WALLETS){closeAdd();showLimitModal();return;}
   // Add wallet
   const id='wa'+Date.now();
@@ -952,10 +947,8 @@ async function submitAdd(){
   ST.ledger.unshift({block:ST.blockNum,hash:genHash(),type:'mint',from:'PROTOCOL',to:n,amount:100,time:new Date().toISOString()});
   if(ST.ledger.length>200)ST.ledger.length=200;
   // Persist incremented counter
-  const addr=session?.ethAddr?.toLowerCase();
-  if(addr){
-    const meta=(await loadS('rwys-wallets'))||{};
-    meta[addr]={...meta[addr],walletsAdded:(added+1)};
+  if(sessionAddr){
+    meta[sessionAddr]={...meta[sessionAddr],walletsAdded:(added+1)};
     await saveS('rwys-wallets',meta);
   }
   closeAdd();scheduleSave();renderAll();
