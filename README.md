@@ -1,9 +1,5 @@
 <html lang="en">
 <head>
-<script type="module">
-  import { createWeb3Modal, defaultWagmiConfig } from 'https://esm.sh/@web3modal/wagmi@4'
-  // setup + open modal on button click
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REAP WHAT YOU SOW — $PvE</title>
