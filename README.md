@@ -11,7 +11,13 @@
   --green:#4caf6e;--red:#c0392b;--purple:#c084fc;
   --text:#e8e0c8;--dim:#8a8068;--bdr:#2a2818;--bdr2:#3d3820;
 }
-  const PROJECT_ID = 'f914ed3c80a27cd3c8f0217ba6ddb0fe';
+  import { reconnect } from 'https://esm.sh/@wagmi/core@2';
+
+// ── YOUR WalletConnect Project ID ──────────────────────────────────────────
+// Get a free one at https://cloud.walletconnect.com  (takes 30 seconds)
+// Replace the placeholder below before deploying.
+const PROJECT_ID = 'f914ed3c80a27cd3c8f0217ba6ddb0fe';  // ← CHANGE THIS LINE
+// ──────────────────────────────────────────────────────────────────────────
 *{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:14px;min-height:100vh;overflow-x:hidden;}
